@@ -140,7 +140,7 @@ function showResults() {
         // Find selected answer
         var answerContainer = answerContainers[questionNumber];                         // Looking inside answer container for current question
         var selector = `input[name=question${questionNumber}]:checked`;                 // Defining CSS Selector that will find which radio button is checked 
-        var userAnswer = (answerContainer.querySelector(selector) || {}).nodeValue;     // querySelector searches for CSS selector in previously defined answerContainer to find which answer's radio button is checked 
+        var userAnswer = (answerContainer.querySelector(selector) || {}).value;     // querySelector searches for CSS selector in previously defined answerContainer to find which answer's radio button is checked 
             // Get reference to selected answer element, if that doesn't exist, use an empty object & get the value of whatever was in the first statement --- Get the value of ^ answer w/ .nodeValue 
                 // As a result, the value will either be the user's answer or undefined, which means a user can skip a question w/o crashing quiz 
 
@@ -214,6 +214,37 @@ var highscores = [JSON.parse(savedScores), thisScore]           // Add the resul
 
 localStorage.setItem("highscore", JSON.stringify(highscores))   // Store the scores 
 
+
+// Timer
+function getTimeRemaining(endtime) {
+    var total = Date.parse(endtime) - Date.parse(new Date());
+    var seconds = Math.floor((total / 1000) % 60);
+
+    return {
+        total,
+        seconds
+    };
+};
+
+function initializeClock(id, endtime) {
+    var clock = document.getElementById(id);
+    var daysSpan = clock.querySelector(".seconds");
+
+    function updateClock () {
+        var t = getTimeRemaining(endtime);
+
+        secondsSpan.innerHTML = ("0" + t.seconds).slice(-2);
+
+        if (t.total <= 0 ) {
+            clearInterval(timeInterval);
+        }
+    }
+    updateClock();
+    var timeInterval = setInterval(updateClock, 1000);
+};
+
+var deadline = new Date(Date.parse(new Date()) + 1000);
+initializeClock("clockdiv", deadline);
 
 // On submit, show results to user 
 prevBtn.addEventListener("click", showPrevSlide);

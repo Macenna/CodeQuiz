@@ -113,8 +113,10 @@ function buildQuiz() {
 
             // Add this question & its answers to the output (display question for user to answer)
             output.push(
-                `<div class="question"> ${currentQuestion.question} </div>
-                <div class="answers"> ${possAnswers.join("")} </div>`
+                `<div class="slide">
+                    <div class="question"> ${currentQuestion.question} </div>
+                    <div class="answers"> ${possAnswers.join("")} </div>
+                </div>`
             );                                                              // join expression takes list of answers & puts them together in one string that we can output into our answers div
         }
     );
@@ -162,5 +164,46 @@ function showResults() {
 // Display quiz in real time
 buildQuiz();
 
+// Slide Pagnation
+var prevBtn = document.getElementById("previous");
+var nextBtn = document.getElementById("next");
+var slides = document.querySelectorAll(".slide");
+var currentSlide = 0;
+
+// Function to show a slide 
+function showSlide(n) {
+    slides[currentSlide].classList.remove("active-slide");      // Hides current slide 
+    slides[n].classList.add("active-slide");                    // Shows the new slide 
+    currentSlide = n;                                           // Updates current slide number 
+    if (currentSlide === 0) {                                   // if on the 1st slide, hide the prev slide button, o.w. show the button
+        prevBtn.style.display = "none";
+    }
+    else {
+        prevBtn.style.display = "inline-block";
+    }
+    if (currentSlide === slides.length-1) {                     // if on the last slide, hide the next slide button & show the submit button
+        nextBtn.style.display = "none";
+        submitBtn.style.display = "inline-block";
+    }
+    else {                                                      // o.w. show the next slide button & hide the submit (for now)
+        nextBtn.style.display = "inline-block";
+        submitBtn.style.display = "none";
+    }
+};
+
+// Adding functionality to navigation buttons 
+    // Use showSlide function in each of these functions 
+function showNextSlide() {
+    showSlide(currentSlide + 1);
+};
+function showPrevSlide() {
+    showSlide(currentSlide - 1);
+};
+
+// calls funtion to show the first slide 
+showSlide(currentSlide);
+
 // On submit, show results to user 
+prevBtn.addEventListener("click", showPrevSlide);
+nextBtn.addEventListener("click", showNextSlide);
 submitBtn.addEventListener("click", showResults);

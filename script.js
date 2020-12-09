@@ -90,7 +90,37 @@ var questions = [
 
 // Function - build quiz itself - run immediately 
 function buildQuiz() {
+    // Variable to store HTML output
+    var output = [];
 
+    // Method to call each question 
+    questions.forEach(                                      // forEach loop returns: current value, the index, & the array itself as parameters 
+        (currentQuestion, questionNumber) => {                     // => Arrow function for operations - we only need current value & index - so name currentQuestion & questionNumber, respectfully 
+            // Local var to store list of possible answers 
+            var possAnswers = [];
+            // for loop for each multiple choice option 
+            for(letter in currentQuestion.answers){
+                
+                // Add an HTML radio button
+                possAnswers.push(
+                    <label>
+                        <input type="radio" name="question${questionNumber}" value="${letter}"></input>
+                        ${letter} : 
+                        ${currentQuestion.possAnswers[letter]}
+                    </label>
+                );
+            }
+
+            // Add this question & its answers to the output (display question for user to answer)
+            output.push(
+                <div class="question"> ${currentQuestion.question} </div>
+            <div class="answers"> ${possAnswers.join("")} </div>
+            );
+        }
+    );
+
+    // Combine outpit list into 1 string of HTML & put it on the page
+    quizContainer.innerHTML = output.join("");
 };
 
 // Function - Show Quiz results - Run when user clicks submit button

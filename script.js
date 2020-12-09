@@ -1,87 +1,87 @@
-var quizContainer = document.getElementById("quiz");
+var quizContainer = document.getElementById("quiz-container");
 var resultsContainer = document.getElementById("results");
 var submitBtn = document.getElementById("submit");
 
 // Questions 
 var questions = [
         // 1
-    {question: "Question 1 goes here?",
+    {question: "What does HTML stand for?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Hyper Technology Masking Link",
+        b: "Hydro Technological Metric Language",
+        c: "Hypertext Markup Language"
     },
     correctAnswer: "c"},
         // 2
-    {question: "Question 2 goes here?",
+    {question: "What does CSS Stand for?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Cascading Style Sheets",
+        b: "Conforming Selector Styles",
+        c: "Converging Style Selectors"
     },
     correctAnswer: "a"},
         // 3
-    {question: "Question 3 goes here?",
+    {question: "What does # define in an HTML file?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "ID Name",
+        b: "Class Name",
+        c: "Tag"
     },
     correctAnswer: "a"},
         // 4
-    {question: "Question 4 goes here?",
+    {question: "What does '.' call in a HTML/CSS/JS file?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Tag",
+        b: "Class Name",
+        c: "ID Name"
     },
     correctAnswer: "b"},
         // 5
-    {question: "Question 5 goes here?",
+    {question: "Where do you link a CSS file?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Body Tag",
+        b: "Footer",
+        c: "Head Tag"
     },
     correctAnswer: "c"},
         // 6
-    {question: "Question 6 goes here?",
+    {question: "Where do you link a JS file?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Body Tag",
+        b: "Head Tag",
+        c: "Header"
     },
     correctAnswer: "a"},
         // 7
-    {question: "Question 7 goes here?",
+    {question: "Where do you link jQuery CDN?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Body Tag",
+        b: "Head Tag",
+        c: "Footer"
     },
     correctAnswer: "b"},
         // 8
-    {question: "Question 8 goes here?",
+    {question: "Where do you link external CSS style sheets from Bootstrap?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Body Tag",
+        b: "Footer",
+        c: "Head Tag"
     },
     correctAnswer: "c"},
         // 9
-    {question: "Question 9 goes here?",
+    {question: "What is an API?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "Application Programming Interface",
+        b: "Application Planner Interface",
+        c: "Application Printing Initializer"
     },
     correctAnswer: "a"},
         // 10
-    {question: "Question 10 goes here?",
+    {question: "Where do you link an API?",
     answers: {
-        a: "first answer",
-        b: "second",
-        c: "third"
+        a: "HTML File",
+        b: "Javascript File",
+        c: "CSS File"
     },
     correctAnswer: "b"},
 ];
@@ -97,16 +97,16 @@ function buildQuiz() {
     questions.forEach(                                      // forEach loop returns: current value, the index, & the array itself as parameters 
         (currentQuestion, questionNumber) => {                     // => Arrow function for operations - we only need current value & index - so name currentQuestion & questionNumber, respectfully 
             // Local var to store list of possible answers 
-            var possAnswers = [];
+            var answers = [];
             // for loop for each multiple choice option 
-            for(letter in currentQuestion.possAnswers){
+            for(letter in currentQuestion.answers){
                 
                 // Add an HTML radio button - add "backticks" (` `) around HTML 
-                possAnswers.push(               // Label element allows users to click anywhere on the answer text to select that answer (more accessible) (if this label section wasn't here, user would have to click on the radio button itself)
+                answers.push(               // Label element allows users to click anywhere on the answer text to select that answer (more accessible) (if this label section wasn't here, user would have to click on the radio button itself)
                     `<label>
                         <input type="radio" name="question${questionNumber}" value="${letter}"></input>
                         ${letter} : 
-                        ${currentQuestion.possAnswers[letter]}
+                        ${currentQuestion.answers[letter]}
                     </label>`
                 );
             }
@@ -115,7 +115,7 @@ function buildQuiz() {
             output.push(
                 `<div class="slide">
                     <div class="question"> ${currentQuestion.question} </div>
-                    <div class="answers"> ${possAnswers.join("")} </div>
+                    <div class="answers"> ${answers.join("")} </div>
                 </div>`
             );                                                              // join expression takes list of answers & puts them together in one string that we can output into our answers div
         }
@@ -133,7 +133,7 @@ function showResults() {
     var answerContainers = quizContainer.querySelectorAll(".answers");
 
     // Keep track of user's answers
-    var correctCounter = 0;
+    var numCorrect = 0;
 
     // forEach question - loop through each question & check the answers 
     questions.forEach( (currentQuestion, questionNumber) => {
@@ -147,7 +147,7 @@ function showResults() {
         // if statement - if correct / else incorrect 
         if (userAnswer === currentQuestion.correctAnswer) {
             // Add to the correct counter
-            correctCounter++;
+            numCorrect++;
             // Color the answers green
             answerContainer[questionNumber].style.color = "green";
         }
@@ -158,7 +158,7 @@ function showResults() {
         }
     });
     // Show # of correct answers out of total 
-    resultsContainer.innerHTML = `${correctCounter} out of ${questions.length}`;
+    resultsContainer.innerHTML = `${numCorrect} out of ${questions.length}`;
 };
 
 // Display quiz in real time
@@ -202,6 +202,18 @@ function showPrevSlide() {
 
 // calls funtion to show the first slide 
 showSlide(currentSlide);
+
+
+// Highscores 
+var thisScore = {userName: user, score: timeScore}
+var savedScores = localStorage.getItem("highscore") || "[]"     // Get the score, or the intial value if empty 
+
+var highscores = [JSON.parse(savedScores), thisScore]           // Add the result 
+    .sort((a, b) => b.score - a.score)                          // Score descending 
+    .slice(0, 5)        // Take highest 5 (scores)
+
+localStorage.setItem("highscore", JSON.stringify(highscores))   // Store the scores 
+
 
 // On submit, show results to user 
 prevBtn.addEventListener("click", showPrevSlide);

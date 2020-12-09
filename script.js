@@ -1,4 +1,4 @@
-var quizContainer = document.getElementById("quiz-container");
+var quizContainer = document.getElementById("quiz");
 var resultsContainer = document.getElementById("results");
 var submitBtn = document.getElementById("submit");
 
@@ -109,7 +109,7 @@ function buildQuiz() {
                         ${currentQuestion.answers[letter]}
                     </label>`
                 );
-            }
+            };
 
             // Add this question & its answers to the output (display question for user to answer)
             output.push(
@@ -205,17 +205,22 @@ showSlide(currentSlide);
 
 
 // Highscores 
-var thisScore = {userName: user, score: timeScore}
-var savedScores = localStorage.getItem("highscore") || "[]"     // Get the score, or the intial value if empty 
+var result = {userName: user, score: timeScore};
+var savedScores = localStorage.getItem("highscore") || "[]";     // Get the score, or the intial value if empty 
 
-var highscores = [JSON.parse(savedScores), thisScore]           // Add the result 
+var highscores = [JSON.parse(savedScores), result]           // Add the result 
     .sort((a, b) => b.score - a.score)                          // Score descending 
-    .slice(0, 5)        // Take highest 5 (scores)
+    .slice(0, 5);        // Take highest 5 (scores)
 
-localStorage.setItem("highscore", JSON.stringify(highscores))   // Store the scores 
+localStorage.setItem("highscore", JSON.stringify(highscores));   // Store the scores 
 
 
-// Timer
+// Vars for Timer
+var timeInMinutes = 10;
+var currentTime = Date.parse(new Date());
+var deadline = new Date(currentTime + timeInMinutes*60*1000);
+
+// Timer Function
 function getTimeRemaining(endtime) {
     var total = Date.parse(endtime) - Date.parse(new Date());
     var seconds = Math.floor((total / 1000) % 60);
@@ -228,7 +233,7 @@ function getTimeRemaining(endtime) {
 
 function initializeClock(id, endtime) {
     var clock = document.getElementById(id);
-    var daysSpan = clock.querySelector(".seconds");
+    var secondsSpan = clock.querySelector(".seconds");
 
     function updateClock () {
         var t = getTimeRemaining(endtime);
@@ -243,8 +248,9 @@ function initializeClock(id, endtime) {
     var timeInterval = setInterval(updateClock, 1000);
 };
 
-var deadline = new Date(Date.parse(new Date()) + 1000);
+// Call clock 
 initializeClock("clockdiv", deadline);
+
 
 // On submit, show results to user 
 prevBtn.addEventListener("click", showPrevSlide);

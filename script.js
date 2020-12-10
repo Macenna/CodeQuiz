@@ -2,6 +2,7 @@ var quizContainer = document.getElementById("quiz");
 var resultsContainer = document.getElementById("results");
 var submitBtn = document.getElementById("submit");
 
+
 // Questions 
 var questions = [
         // 1
@@ -87,6 +88,12 @@ var questions = [
 ];
 
 
+// Slide Pagnation
+var prevBtn = document.getElementById("previous");
+var nextBtn = document.getElementById("next");
+var slides = document.querySelectorAll(".slide");
+var currentSlide = 0;
+
 
 // Function - build quiz itself - run immediately 
 function buildQuiz() {
@@ -164,11 +171,7 @@ function showResults() {
 // Display quiz in real time
 buildQuiz();
 
-// Slide Pagnation
-var prevBtn = document.getElementById("previous");
-var nextBtn = document.getElementById("next");
-var slides = document.querySelectorAll(".slide");
-var currentSlide = 0;
+
 
 // Function to show a slide 
 function showSlide(n) {

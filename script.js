@@ -171,9 +171,9 @@ function showResults() {
 // Display quiz in real time
 buildQuiz();
 
+// var for active slide 
 
-
-// Function to show a slide 
+// Function to show a slide --- Have to add class for active slide 
 function showSlide(n) {
     slides[currentSlide].classList.remove("active-slide");      // Hides current slide 
     slides[n].classList.add("active-slide");                    // Shows the new slide 

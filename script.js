@@ -148,6 +148,10 @@ function buildCard() {
 function evaluateAnswer() {
     console.log(this.value);
     //use if statements to evaluate the answers
+    if (condition) {
+        
+    }
+
     index++;
     if (index === questions.length) {
         console.log("game over");
